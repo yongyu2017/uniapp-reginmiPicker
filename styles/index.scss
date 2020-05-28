@@ -1,0 +1,49 @@
+@import '@/styles/mixin.scss';
+
+body,
+td,
+th {
+	font-family: 'microsoft yahei', arial;
+	font-size: 28rpx;
+	color: $uni-color-paragraph;
+	line-height: 50rpx;
+	background-color: $PageBgColor;
+}
+/** reset **/
+view,
+text,
+label,
+input,
+textarea,
+button,
+navigator,
+cover-image,
+cover-view {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'microsoft yahei', arial;
+}
+span {
+	line-height: 50upx;
+}
+/** reset **/
+
+/** 常用样式 **/
+.fix:after {
+	content: '';
+	display: block;
+	visibility: hidden;
+	clear: both;
+	height: 0;
+	line-height: 0;
+	font-size: 0;
+}
+.input-placeholder {
+	color: #c3c8cc;
+}
+.gray-hr {
+	height: 24rpx;
+	background: #f6f8fb;
+}
+/** 常用样式 **/

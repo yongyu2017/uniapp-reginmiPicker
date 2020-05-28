@@ -1,0 +1,19 @@
+@mixin textoverflow() {  
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+@mixin lineClamp($line) {  
+	display: -webkit-box;    
+	-webkit-box-orient: vertical;    
+	-webkit-line-clamp: $line;    
+	overflow: hidden;
+}
+
+@mixin icon($width, $height, $url) {
+	width: #{ $width }rpx;
+	height: #{ $height }rpx;
+	background: url($url) no-repeat;
+	background-size: 100% 100%;
+}

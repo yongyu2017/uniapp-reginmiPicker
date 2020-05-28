@@ -1,0 +1,1721 @@
+@import '@/styles/mixin.scss';
+
+/** 公共 **/
+.map-box{
+	position: relative;
+	z-index: 0;
+	height: 308rpx;
+	background: #F1F3F4;
+	.map-dom{
+		position: relative;
+		z-index: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.map-img{
+		position: absolute;
+		z-index: 1;
+		top: 50%;
+		left: 50%;
+		width: 56rpx;
+		height: 80rpx;
+		transform: translate(-50%, -100%);
+	}
+	.location-img{
+		position: absolute;
+		z-index: 3;
+		bottom: 4rpx;
+		right: 4rpx;
+		width: 88rpx;
+		height: 88rpx;
+	}
+	.p01{
+		position: absolute;
+		z-index: 2;
+		bottom: 8rpx;
+		left: 0;
+		width: 100%;
+		line-height: 0;
+		text-align: center;
+		font-size: 0;
+		opacity: 0.96;
+		.address-img{
+			position: absolute;
+			z-index: 4;
+			top: 15rpx;
+			left: 16rpx;
+			width: 18rpx;
+			height: 26rpx;
+			line-height: 0;
+		}
+		.adr-txt{
+			float: left;
+			display: inline-block;
+			line-height: 40rpx;
+			color: #747D88;
+			font-size: 24rpx;
+			white-space: normal;
+		}
+		.txt{
+			position: relative;
+			z-index: 3;
+			display: inline-block;
+			max-width: 494rpx;
+			text-align: left;
+			line-height: 0;
+			font-size: 0;
+			padding: 8rpx 16rpx 8rpx 42rpx;
+			white-space: normal;
+			background: #fff;
+		}
+	}
+}
+
+/** 公共 **/
+
+/** 房源 **/
+.housing-part {
+	padding-top: 88rpx;
+	.search-top{
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 114rpx;
+		padding: 0 32rpx;
+		background: #fff;
+		border-bottom: 2rpx solid #F1F3F4;
+		.search-a{
+			margin-top: 24rpx;
+			display: block;
+			height: 64rpx;
+			line-height: 64rpx;
+			padding: 0 32rpx 0 84rpx;
+			color: #99A3AF;
+			font-size: 28rpx;
+			border-radius: 32rpx;
+			background: #F0F2F5 url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_search.png') 24rpx 14rpx no-repeat;
+			background-size: 36rpx 36rpx;
+		}
+	}
+	.screen-part{
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 88rpx;
+		background: #fff;
+		.li{
+			position: relative;
+			z-index: 0;
+			float: left;
+			width: 49.999%;
+			height: 100%;
+			padding: 0 8rpx;
+			text-align: center;
+			&::after{
+				content: '';
+				position: absolute;
+				z-index: 2;
+				top: 50%;
+				right: 0;
+				margin-top: -16rpx;
+				display: block;
+				width: 2rpx;
+				height: 32rpx;
+				background: #E0E5EB;
+			}
+			&:last-child{
+				&::after{
+					content: '';
+					display: none;
+				}
+			}
+			.txt{
+				position: relative;
+				z-index: 0;
+				display: inline-block;
+				max-width: 192rpx;
+				line-height: 88rpx;
+				padding-right: 32rpx;
+				color: #747D88;
+				font-size: 28rpx;
+				vertical-align: middle;
+				@include textoverflow();
+				&::after{
+					content: '';
+					position: absolute;
+					top: 50%;
+					right: 0;
+					margin-top: -5rpx;
+					display: inline-block;
+					width: 16rpx;
+					height: 10rpx;
+					background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_select_down.png') no-repeat;
+					background-size: 100% 100%;
+					transition: all 0.5s ease 0s;
+				}
+				&.selected{
+					color: #21A378;
+					&::after{
+						content: '';
+						background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_selected_down.png') no-repeat;
+						background-size: 100% 100%;
+					}
+				}
+				&.hover{
+					color: #21A378;
+					&::after{
+						content: '';
+						background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_selected_down.png') no-repeat;
+						background-size: 100% 100%;
+						transform: rotate(180deg);
+					}
+				}
+			}
+		}
+	}
+	.screen-pop{
+		position: fixed;
+		z-index: 9;
+		top: 88rpx;
+		left: 0;
+		width: 100%;
+		max-height: 672rpx;
+		background: #fff;
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		transform: translate(0, -100%);
+		transition: transform 0.3s ease 0s;
+		&.hover{
+			transform: translate(0, 0);
+		}
+		.houseType-radio{
+			.radio-group{
+				.label{
+					padding: 28rpx 74rpx 28rpx 32rpx;
+					&.checked{
+						.ic{
+							background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_radio2_true.png');
+							background-size: 100% 100%;
+						}
+						.p01{
+							color: #21A378;
+						}
+					}
+				}
+				.ic{
+					right: 32rpx;
+					left: auto;
+					width: 36rpx;
+					height: 24rpx;
+					background: none;
+				}
+				.p01{
+					line-height: 40rpx;
+					color: #1C2023;
+					font-size: 28rpx;
+				}
+			}
+		}
+	}
+	.png{
+		position: fixed;
+		z-index: 8;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		display: none;
+		background: #000000;
+		opacity: 0.2;
+		&.hover{
+			display: block;
+		}
+	}
+	.no-more{
+		padding-top: 0;
+	}
+	.housing-list{
+		padding: 32rpx;
+		.li{
+			margin-bottom: 16rpx;
+			padding: 32rpx;
+			background: #fff;
+			border-radius: 16rpx;
+		}
+		.img-box{
+			margin-top: 0;
+			height: 196rpx;
+		}
+		.co{
+			padding: 0;
+			border-bottom: 0;
+			.statu{
+				padding: 8rpx 0 16rpx;
+				overflow: hidden;
+				.statu-text{
+					margin-right: 16rpx;
+					float: left;
+					height: 42rpx;
+					line-height: 42rpx;
+				}
+			}
+			.p02{
+				background: url("http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_address.png") 0 3rpx no-repeat;
+				background-size: 24rpx 28rpx;
+				.txt{
+					height: 34rpx;
+					line-height: 34rpx;
+					color: #747D88;
+				}
+			}
+		}
+	}
+}
+/** 房源 **/
+
+/** 搜索 **/
+.housingSearch-part{
+	padding-top: 114rpx;
+	.search-top{
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 114rpx;
+		padding: 24rpx 32rpx 0;
+		background: #fff;
+		border-bottom: 2rpx solid #F1F3F4;
+		.search-box{
+			position: relative;
+			z-index: 0;
+			margin-right: 88rpx;
+			height: 64rpx;
+			background: #F0F2F5;
+			border-radius: 32rpx;
+			.icon{
+				position: absolute;
+				z-index: 1;
+				top: 14rpx;
+				left: 24rpx;
+			}
+			.inp-txt{
+				width: 100%;
+				height: 64rpx;
+				padding: 0 32rpx 0 84rpx;
+				color: #333333;
+				font-size: 28rpx;
+			}
+		}
+		.btn-a{
+			position: absolute;
+			z-index: 1;
+			top: 24rpx;
+			right: 32rpx;
+			line-height: 64rpx;
+			color: #424649;
+			font-size: 28rpx;
+		}
+	}
+	.history-box{
+		position: absolute;
+		z-index: 10;
+		top: 114rpx;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		padding: 30rpx 32rpx;
+		background: #fff;
+		.tit{
+			position: relative;
+			z-index: 0;
+			margin-bottom: 32rpx;
+			.txt{
+				line-height: 44rpx;
+				color: #616972;
+				font-size: 32rpx;
+			}
+			.btn-a{
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				right: 0;
+				line-height: 44rpx;
+				color: #7F8389;
+				font-size: 28rpx;
+			}
+		}
+		.ul-list{
+			.li{
+				margin: 0 28rpx 14rpx 0;
+				float: left;
+				display: inline-block;
+				height: 56rpx;
+				line-height: 56rpx;
+				padding: 0 16rpx;
+				color: #666666;
+				font-size: 28rpx;
+				background: #F0F2F5;
+				border-radius: 8rpx;
+			}
+		}
+	}
+}
+/** 搜索 **/
+
+/** 添加房源 **/
+.addHousing-part{
+	padding: 32rpx;
+	&.has-fixedSubmit-box{
+		padding-bottom: 144rpx;
+		&.isIphonex{
+			padding-bottom: 204rpx;
+		}
+	}
+	.housing-num{
+		margin-bottom: 24rpx;
+		line-height: 34rpx;
+		color: #747D88;
+		font-size: 24rpx;
+	}
+	.pic-box{
+		position: relative;
+		z-index: 0;
+		margin: 14rpx 0 0;
+		width: 314rpx;
+		height: 192rpx;
+		font-size: 0;
+		background: #F4F6F7;
+		border-radius: 16rpx;
+		overflow: hidden;
+		.img-dom{
+			position: relative;
+			z-index: 1;
+			width: 100%;
+			height: 100%;
+		}
+		.png{
+			position: absolute;
+			z-index: 3;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+		.op-box{
+			position: absolute;
+			z-index: 2;
+			top: 50%;
+			left: 0;
+			width: 100%;
+			text-align: center;
+			transform: translate(0, -50%);
+			.icon{
+				margin-bottom: 16rpx;
+			}
+			.p01{
+				line-height: 40rpx;
+				color: #99A3AF;
+				font-size: 28rpx;
+			}
+		}
+		.btn-a{
+			position: absolute;
+			z-index: 4;
+			top: 0;
+			right: 0;
+			display: inline-block;
+			width: 64rpx;
+			height: 64rpx;
+			line-height: 64rpx;
+			text-align: center;
+			font-size: 0;
+		}
+	}
+	.formSubmit-box{
+		padding: 80rpx 32rpx;
+		background: #F6F8FB;
+		.tips-txt{
+			margin-top: 16rpx;
+			line-height: 34rpx;
+			text-align: center;
+			color: #99A3AF;
+			font-size: 24rpx;
+		}
+	}
+	.form-box{
+		margin-bottom: 48rpx;
+		padding: 0 32rpx 32rpx;
+		background: #fff;
+		border-radius: 16rpx;
+		overflow: hidden;
+	}
+	.form-he{
+		margin-bottom: 16rpx;
+		line-height: 44rpx;
+		color: #99A3AF;
+		font-size: 32rpx;
+	}
+}
+/** 添加房源 **/
+
+/** 添加地址 **/
+.addAddress-part {
+	padding: 32rpx;
+	&.has-fixedSubmit-box{
+		padding-bottom: 144rpx;
+		&.isIphonex{
+			padding-bottom: 204rpx;
+		}
+	}
+	.form-box{
+		margin-bottom: 32rpx;
+		padding: 0 32rpx;
+		background: #fff;
+		border-radius: 16rpx;
+	}
+	.map-part{
+		margin-bottom: 32rpx;
+		padding: 0 32rpx 32rpx;
+		background: #fff;
+		border-radius: 16rpx;
+		.tit{
+			line-height: 48rpx;
+			padding: 32rpx 0 16rpx;
+			color: #1C2023;
+			font-size: 28rpx;
+		}
+	}
+	.address-list{
+		margin-bottom: 32rpx;
+		padding: 32rpx 32rpx 0;
+		background: #fff;
+		border-radius: 16rpx;
+		.he{
+			position: relative;
+			z-index: 0;
+			margin-bottom: 28rpx;
+			.tit{
+				position: relative;
+				z-index: 1;
+				line-height: 40rpx;
+				color: #1C2023;
+				font-size: 28rpx;
+			}
+			.btn-a{
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				right: 0;
+				line-height: 40rpx;
+				color: #99A3AF;
+				font-size: 28rpx;
+			}
+		}
+		.ul-list{
+			padding-bottom: 20rpx;
+			overflow: hidden;
+			.li{
+				position: relative;
+				z-index: 0;
+				height: 96rpx;
+				transition: transform 0.3s ease 0s;
+				&:last-child{
+					.txt{
+						border-bottom: 0;
+					}
+				}
+				&.active{
+					transform: translate(-160rpx, 0);
+				}
+				.txt{
+					position: relative;
+					z-index: 1;
+					line-height: 48rpx;
+					padding: 24rpx 0;
+					color: #747D88;
+					font-size: 28rpx;
+					border-bottom: 1px solid #F1F3F4;
+					@include textoverflow();
+				}
+				.del-a{
+					position: absolute;
+					z-index: 2;
+					top: 0;
+					right: -160rpx;
+					width: 128rpx;
+					height: 96rpx;
+					line-height: 96rpx;
+					text-align: center;
+					color: #fff;
+					font-size: 32rpx;
+					background: #F57E7E;
+				}
+			}
+		}
+	}
+	.frontDesk-radioGroupBox{
+		.radio-group{
+			.label{
+				display: inline-block;
+				margin-left: 56rpx;
+				&:first-child{
+					margin-left: 0;
+				}
+				&.checked{
+					.p01{
+						color: #21A378;
+					}
+				}
+				.p01{
+					color: #C3C8CC;
+				}
+			}
+		}
+	}
+	.formdl-list-address{
+		.dt{
+			color: #747D88;
+		}
+		.font-txt{
+			color: #747D88;
+		}
+	}
+}
+/** 添加地址 **/
+
+/** 房源详情 **/
+.housingDetail-part{
+	&.has-fixedSubmit-box{
+		padding-bottom: 144rpx;
+		&.isIphonex{
+			padding-bottom: 204rpx;
+		}
+	}
+	.housing-img{
+		height: 456rpx;
+		font-size: 0;
+		.img-dom{
+			width: 100%;
+			height: 100%;
+		}
+	}
+	.detail-co{
+		position: relative;
+		z-index: 0;
+		padding: 32rpx 32rpx 160rpx;
+	}
+	.form-he{
+		margin-bottom: 16rpx;
+		line-height: 44rpx;
+		font-size: 32rpx;
+		color: #99A3AF;
+	}
+	.detail-top{
+		position: relative;
+		z-index: 0;
+		margin-bottom: 48rpx;
+		padding: 0 110rpx 0 0;
+		.op-btn{
+			position: absolute;
+			z-index: 2;
+			top: 38rpx;
+			right: 0;
+			height: 64rpx;
+			.line{
+				position: absolute;
+				left: -18rpx;
+				top: 0;
+				width: 2rpx;
+				height: 64rpx;
+				background: #F1F3F4;
+			}
+			.ic{
+				width: 64rpx;
+				height: 64rpx;
+				background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_more.png') center center no-repeat;
+				background-size: 32rpx 8rpx;
+			}
+		}
+		.house-code{
+			margin-bottom: 8rpx;
+			line-height: 34rpx;
+			color: #99A3AF;
+			font-size: 24rpx;
+		}
+		.p01{
+			line-height: 50rpx;
+			color: #1C2023;
+			font-size: 36rpx;
+			font-weight: bold;
+		}
+		.p02{
+			margin-top: 16rpx;
+			line-height: 34rpx;
+			color: #747D88;
+			font-size: 24rpx;
+		}
+		.statu{
+			margin-top: 16rpx;
+			.statu-text{
+				margin-right: 16rpx;
+				display: inline-block;
+				height: 42rpx;
+				line-height: 42rpx;
+				padding: 0 8rpx;
+				font-size: 24rpx;
+				border-radius: 8rpx;
+			}
+			.s01{
+				color: #49CCA1;
+				background: #EDF8F4;
+			}
+			.s02{
+				color: #F57E7E;
+				background: #FAEBEB;
+			}
+			.s03{
+				color: #90A2B7;
+				background: #F0F2F5;
+			}
+		}
+	}
+	.detail-des{
+		margin-bottom: 48rpx;
+		.tit{
+			margin-bottom: 8rpx;
+			line-height: 44rpx;
+			color: #1C2023;
+			font-size: 32rpx;
+		}
+		.txt{
+			display: block;
+			line-height: 48rpx;
+			color: #616972;
+			font-size: 24rpx;
+			word-break: break-all;
+		}
+	}
+	.detail-mv{
+		margin-bottom: 48rpx;
+		padding: 32rpx;
+		box-shadow: 0px 4px 32px 0px rgba(195,200,204,0.16);
+		border-radius: 16rpx;
+		.he{
+			position: relative;
+			z-index: 0;
+			margin-bottom: 16rpx;
+			.tit{
+				position: relative;
+				z-index: 1;
+				line-height: 40rpx;
+				color: #1C2023;
+				font-size: 28rpx;
+			}
+			.s1{
+				position: absolute;
+				z-index: 2;
+				top: 3rpx;
+				right: 0;
+				line-height: 34rpx;
+				padding-right: 30rpx;
+				color: #21A378;
+				font-size: 24rpx;
+				background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_arrow_right3.png') right center no-repeat;
+				background-size: 28rpx 28rpx;
+			}
+		}
+		.address-txt{
+			margin-bottom: 16rpx;
+			line-height: 40rpx;
+			color: #747D88;
+			font-size: 24rpx;
+			.ic{
+				position: relative;
+				margin-top: -3rpx;
+				margin-right: 8rpx;
+				display: inline-block;
+				width: 18rpx;
+				height: 26rpx;
+				background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_address3.png') no-repeat;
+				background-size: 100% 100%;
+				vertical-align: middle;
+			}
+			.s1{
+				font-weight: 400;
+			}
+		}
+		.map-box{
+			margin-bottom: 48rpx;
+		}
+		.p01{
+			line-height: 48rpx;
+			color: #616972;
+			font-size: 24rpx;
+			@include textoverflow();
+		}
+	}
+	.detail-gn{
+		.ul-list{
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: center;
+			width: 100%;
+			padding: 16rpx 0;
+			box-shadow: 0px 4px 32px 0px rgba(195,200,204,0.18);
+			border-radius: 16rpx;
+			.li{
+				position: relative;
+				z-index: 0;
+				flex-shrink: 0;
+				flex-basis: 1;
+				width: 343rpx;
+				text-align: center;
+				padding: 16rpx 0;
+				&::after{
+					content: '';
+					position: absolute;
+					z-index: 1;
+					top: 50%;
+					left: 0;
+					margin-top: -24rpx;
+					width: 0;
+					height: 48rpx;
+					font-size: 0;
+					border-right: 1px solid #F1F3F4;
+				}
+				&:nth-child(odd){
+					&::after{
+						content: '';
+						border-right: 0;
+					}
+				}
+				.icon-wrap{
+					margin-right: 16rpx;
+					display: inline-block;
+					width: 64rpx;
+					height: 64rpx;
+					line-height: 64rpx;
+					text-align: center;
+					font-size: 0;
+					vertical-align: middle;
+					background: rgba(33,163,120,0.1);
+					border-radius: 50%;
+				}
+				.txt{
+					display: inline-block;
+					line-height: 34rpx;
+					color: #616972;
+					font-size: 24rpx;
+					vertical-align: middle;
+				}
+			}
+		}
+	}
+	.fixedSubmit-box{
+		.co-box{
+			.box-l{
+				float: left;
+				width: 192rpx;
+			}
+			.box-r{
+				margin-left: 208rpx;
+			}
+		}
+		.btn-a, .btn-a2{
+			height: 96rpx;
+			line-height: 96rpx;
+			text-align: center;
+			color: #fff;
+			font-size: 36rpx;
+			background: #21A378;
+			border-radius: 8rpx;
+		}
+		.btn-a2{
+			line-height: 94rpx;
+			color: #21A378;
+			background: #fff;
+			border: 1px solid #21A378;
+		}
+	}
+}
+/** 房源详情 **/
+
+/** 房源配置 **/
+.housingSetting{
+	padding: 0 32rpx;
+	.bindLock-part{
+		padding: 64rpx 32rpx;
+		.icon{
+			margin: 0 auto 32rpx;
+			display: block;
+		}
+		.btn-a{
+			margin: 0 auto;
+			width: 320rpx;
+			height: 80rpx;
+			line-height: 78rpx;
+			text-align: center;
+			color: #21A378;
+			font-size: 28rpx;
+			border: 1px solid #21A378;
+			border-radius: 8rpx;
+		}
+	}
+	.des-box{
+		.dt{
+			line-height: 48rpx;
+			padding: 24rpx 0 12rpx;
+			color: #1C2023;
+			font-size: 28rpx;
+		}
+		.textarea1{
+			width: 100%;
+			height: 210rpx;
+			line-height: 48rpx;
+			padding: 4rpx 0;
+			color: #1C2023;
+			font-size: 28rpx;
+		}
+		.num-txt{
+			text-align: right;
+			color: #99A3AF;
+			font-size: 24rpx;;
+		}
+	}
+	.checkbox-group{
+		padding: 12rpx 0;
+	}
+	.formSubmit-box{
+		padding: 80rpx 0;
+		.btn-a2{
+			margin-top: 16rpx;
+		}
+	}
+}
+/** 房源配置 **/
+
+/** 选择房源 **/
+.houseListPicker-part{
+	&.has-fixedSubmit-box{
+		padding-bottom: 144rpx;
+		&.isIphonex{
+			padding-bottom: 204rpx;
+		}
+	}
+	.fixedSubmit-box{
+		transform: translate(0, 120%);
+		transition: all 0.3s ease 0s;
+		&.active{
+			transform: translate(0, 0);
+		}
+	}
+}
+/** 选择房源 **/
+
+/** 绑定门锁 **/
+.bindLock-part{
+	padding: 32rpx;
+	.form-box{
+		padding: 0 32rpx;
+		background: #fff;
+		border-radius: 16rpx;
+	}
+	.formSubmit-box{
+		padding: 80rpx 0 0;
+	}
+}
+/** 绑定门锁 **/
+
+/** 门锁管理 **/
+.lockManage-part{
+	padding: 32rpx 32rpx 162rpx;
+	&.isIphonex{
+		padding-bottom: 220rpx;
+	}
+	.lockManage-top{
+		padding: 0 32rpx;
+		background: #fff;
+		border-radius: 16rpx;
+	}
+	.lock-state{
+		text-align: center;
+		padding: 32rpx 0;
+		font-size: 0;
+		.li{
+			margin: 0 32rpx;
+			display: inline-block;
+			line-height: 34rpx;
+			font-size: 0;
+		}
+		.signal-box{
+			position: relative;
+			z-index: 0;
+			display: inline-block;
+			width: 26rpx;
+			height: 24rpx;
+			vertical-align: middle;
+			.line{
+				position: absolute;
+				z-index: 1;
+				bottom: 0;
+				left: 0;
+				width: 6rpx;
+				height: 100%;
+				font-size: 0;
+				background: #99a3af;
+				border-radius: 3rpx;
+			}
+			.line1{
+				left: 0;
+				height: 33.333%;
+			}
+			.line2{
+				left: 10rpx;
+				height: 66.666%;
+			}
+			.line3{
+				left: 20rpx;
+				height: 100%;
+			}
+		}
+		.txt{
+			margin-left: 8rpx;
+			display: inline-block;
+			line-height: 34rpx;
+			color: #747D88;
+			font-size: 24rpx;
+			vertical-align: middle;
+		}
+		.electricity-box{
+			position: relative;
+			z-index: 0;
+			display: inline-block;
+			width: 44rpx;
+			height: 24rpx;
+			line-height: 0;
+			font-size: 0;
+			vertical-align: middle;
+			background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_battery.png') no-repeat;
+			background-size: 100% 100%;
+			.box{
+				position: absolute;
+				z-index: 1;
+				top: 4rpx;
+				bottom: 4rpx;
+				left: 5rpx;
+				width: 32rpx;
+				font-size: 0;
+			}
+			.line{
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: #99A3AF;
+				border-radius: 3rpx;
+			}
+		}
+	}
+	.bluelock-box{
+		.bl-box{
+			position: relative;
+			z-index: 0;
+			margin: 0 auto;
+			width: 288rpx;
+			height: 288rpx;
+			background: #EDFCF6;
+			border-radius: 50%;
+			.box1{
+				position: absolute;
+				z-index: 1;
+				top: 24rpx;
+				left: 24rpx;
+				width: 240rpx;
+				height: 240rpx;
+				background: #CEF5E5;
+				border-radius: 50%;
+			}
+			.box2{
+				position: absolute;
+				z-index: 2;
+				top: 54rpx;
+				left: 54rpx;
+				width: 180rpx;
+				height: 180rpx;
+				background: linear-gradient(180deg,rgba(41,204,150,1) 0%,rgba(33,163,120,1) 100%);
+				box-shadow: 0 4rpx 16rpx 0 rgba(33,163,120,0.5);
+				border-radius: 50%;
+			}
+			.icon{
+				position: absolute;
+				z-index: 3;
+				top: 90rpx;
+				left: 90rpx;
+			}
+		}
+		.state-txt{
+			margin-top: 8rpx;
+			line-height: #FF7070;
+			text-align: center;
+			color: #21A378;
+			font-size: 28rpx;
+			&.state1{
+				color: #21A378;
+			}
+			&.state2{
+				color: #FF7070;
+			}
+		}
+	}
+	.setting-list{
+		margin-top: 32rpx;
+		.li{
+			border-bottom: 1px solid #F1F3F4;
+			&:last-child{
+				border-bottom: 0;
+			}
+		}
+		.a01{
+			position: relative;
+			z-index: 0;
+			.txt{
+				position: relative;
+				z-index: 1;
+				margin-right: 60rpx;
+				line-height: 40rpx;
+				padding: 28rpx 0;
+				color: #1C2023;
+				font-size: 28rpx;
+			}
+			.ic{
+				position: absolute;
+				z-index: 2;
+				top: 50%;
+				right: 0;
+				margin-top: -17rpx;
+				width: 32rpx;
+				height: 34rpx;
+				background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_arrow_right2.png');
+				background-size: 100% 100%;
+			}
+		}
+	}
+	.pwd-part{
+		margin-top: 48rpx;
+		.ti{
+			position: relative;
+			z-index: 0;
+			margin-bottom: 16rpx;
+			.txt{
+				position: relative;
+				z-index: 1;
+				margin-right: 150rpx;
+				line-height: 44rpx;
+				color: #1C2023;
+				font-size: 32rpx;
+			}
+			.btn-a{
+				position: absolute;
+				z-index: 0;
+				top: 0;
+				right: 0;
+				line-height: 44rpx;
+				color: #21A378;
+				font-size: 28rpx;
+			}
+		}
+		.empty-box{
+			padding: 80rpx 0;
+		}
+		.part-con{
+			background: #fff;
+			border-radius: 16rpx;
+		}
+	}
+	.pwd-list{
+		margin: 0 32rpx;
+		.li{
+			position: relative;z-index: 0;
+			padding: 32rpx 0;
+			border-bottom: 1px solid #F1F3F4;
+			&:last-child{
+				border-bottom: 0;
+			}
+		}
+		.co{
+			position: relative;
+			z-index: 1;
+			margin-right: 144rpx;
+			&.no-btn{
+				margin-right: 0;
+			}
+		}
+		.p01{
+			line-height: 42rpx;
+			font-size: 0;
+			.txt{
+				display: inline-block;
+				color: #1C2023;
+				font-size: 28rpx;
+				vertical-align: middle;
+			}
+			.state-txt{
+				margin-right: 8rpx;
+				display: inline-block;
+				height: 42rpx;
+				line-height: 42rpx;
+				padding: 0 8rpx;
+				color: #21A378;
+				font-size: 24rpx;
+				background: #EDF8F4;
+				vertical-align: middle;
+				&.state1{
+					color: #21A378;
+					background: #EDF8F4;
+				}
+				&.state2{
+					color: #F57E7E;
+					background: #FFF2F2;
+				}
+			}
+			.icon{
+				margin: 0 24rpx 0 8rpx;
+			}
+		}
+		.p02{
+			margin-top: 14rpx;
+			line-height: 34rpx;
+			color: #747D88;
+			font-size: 24rpx;
+		}
+		.btn-a{
+			position: absolute;
+			z-index: 2;
+			top: 50%;
+			right: 0;
+			margin-top: -32rpx;
+			width: 144rpx;
+			height: 64rpx;
+			line-height: 62rpx;
+			text-align: center;
+			color: #21A378;
+			font-size: 24rpx;
+			border: 1px solid #21A378;
+			border-radius: 8rpx;
+		}
+	}
+	.log-box{
+		padding: 28rpx 0;
+		.btn-a{
+			display: inline-block;
+			line-height: 40rpx;
+			color: #21A378;
+			font-size: 28rpx;
+		}
+	}
+	.fixdBtn-box{
+		position: fixed;
+		z-index: 10;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 112rpx;
+		padding: 40rpx 32rpx 0;
+		background: #fff;
+		border-top: 1px solid #F1F3F4;
+		&.isIphonex{
+			height: 172rpx;
+			padding-bottom: 60rpx;
+		}
+		.box-l{
+			float: left;
+			line-height: 34rpx;
+			.btn-a1{
+				margin-left: 36rpx;
+				display: inline-block;
+				color: #21A378;
+				font-size: 24rpx;
+				&:first-child{
+					margin-left: 0;
+				}
+			}
+		}
+		.box-r{
+			float: right;
+			line-height: 34rpx;
+			text-align: center;
+			.txt{
+				display: inline-block;
+				max-width: 250rpx;
+				color: #747D88;
+				font-size: 24rpx;
+				vertical-align: middle;
+				@include textoverflow();
+			}
+			.btn-a2{
+				margin-left: 16rpx;
+				display: inline-block;
+				color: #FF7070;
+				font-size: 28rpx;
+				vertical-align: middle;
+			}
+		}
+	}
+}
+.openDoorWay-part{
+	padding: 0 32rpx;
+	.auto-list{
+		.li{
+			position: relative;
+			z-index: 0;
+			padding: 16rpx 120rpx 16rpx 0;
+			border-bottom: 1px solid #F1F3F4;
+			&.disabled{
+				.ti, .p01{
+					opacity: 0.6;
+				}
+			}
+		}
+		.ti{
+			line-height: 40rpx;
+			color: #424649;
+			font-size: 28rpx;
+		}
+		.p01{
+			margin-top: 4rpx;
+			line-height: 34rpx;
+			font-size: 24rpx;
+			color: #99A3AF;
+		}
+		.switch-box{
+			position: absolute;
+			z-index: 0;
+			top: 32rpx;
+			right: 0;
+		}
+	}
+}
+/** 门锁管理 **/
+
+/** 添加密码 **/
+.addPassword-part{
+	padding: 32rpx;
+	.tips-txt{
+		margin-top: 16rpx;
+		display: block;
+		line-height: 34rpx;
+		color: #747D88;
+		font-size: 24rpx;
+	}
+	.formSubmit-box{
+		padding-top: 80rpx;
+	}
+}
+/** 添加密码 **/
+
+/** 蓝牙钥匙、身份证钥匙 **/
+.bluetoothKey-part, .idKey-part{
+	padding: 32rpx 32rpx 144rpx;
+	&.isIphonex{
+		padding-bottom: 204rpx;
+	}
+	.pwd-list{
+		.li{
+			position: relative;z-index: 0;
+			padding: 32rpx 0;
+			border-bottom: 1px solid #F1F3F4;
+		}
+		.co{
+			position: relative;
+			z-index: 1;
+			margin-right: 144rpx;
+			&.no-btn{
+				margin-right: 0;
+			}
+		}
+		.p01{
+			line-height: 42rpx;
+			font-size: 0;
+			.txt{
+				display: inline-block;
+				color: #1C2023;
+				font-size: 28rpx;
+				vertical-align: middle;
+			}
+		}
+		.p02{
+			margin-top: 14rpx;
+			line-height: 34rpx;
+			color: #747D88;
+			font-size: 24rpx;
+		}
+		.btn-a{
+			position: absolute;
+			z-index: 2;
+			top: 50%;
+			right: 0;
+			margin-top: -32rpx;
+			width: 144rpx;
+			height: 64rpx;
+			line-height: 62rpx;
+			text-align: center;
+			color: #21A378;
+			font-size: 24rpx;
+			border: 1px solid #21A378;
+			border-radius: 8rpx;
+		}
+	}
+}
+.idKey-part{
+	.pwd-list{
+		.p01{
+			.txt{
+				margin-right: 16rpx;
+			}
+			.state-txt{
+				margin-right: 8rpx;
+				display: inline-block;
+				height: 42rpx;
+				line-height: 42rpx;
+				padding: 0 8rpx;
+				color: #21A378;
+				font-size: 24rpx;
+				background: #EDF8F4;
+				vertical-align: middle;
+				&.state1{
+					color: #21A378;
+					background: #EDF8F4;
+				}
+				&.state2{
+					color: #F57E7E;
+					background: #FFF2F2;
+				}
+				&.state3{
+					color: #90A2B7;
+					background: #F9FAFC;
+				}
+			}
+		}
+	}
+}
+/** 蓝牙钥匙、身份证钥匙 **/
+
+/** 门锁日志、子账号操作日志 **/
+.lockLog-part, .accountManagementLog-part{
+	padding: 0 32rpx 144rpx;
+	&.isIphonex{
+		padding-bottom: 204rpx;
+	}
+	.ul-list{
+		padding: 32rpx 0;
+		border-bottom: 1px solid #F1F3F4;
+		.li{
+			display: flex;
+			flex-flow: row nowrap;
+			padding: 8rpx 0;
+		}
+		.name{
+			width: 150rpx;
+			line-height: 40rpx;
+			color: #1C2023;
+			font-size: 28rpx;
+			@include textoverflow();
+		}
+		.txt{
+			flex: 1;
+			line-height: 40rpx;
+			color: #747D88;
+			font-size: 24rpx;
+			@include textoverflow();
+		}
+		.time{
+			width: 258rpx;
+			line-height: 40rpx;
+			text-align: right;
+			color: #747D88;
+			font-size: 24rpx;
+			@include textoverflow();
+		}
+	}
+}
+.accountManagementLog-part{
+	.ul-list{
+		.name{
+			flex: 1;
+			width: auto;
+		}
+	}
+}
+/** 门锁日志、子账号操作日志 **/
+
+/** 入住指引 **/
+.selectCheckinGuide-part{
+	padding: 32rpx 32rpx 144rpx;
+	&.isIphonex{
+		padding-bottom: 204rpx;
+	}
+	.certificationRequirement-radio{
+		.radio-group{
+			.label{
+				padding: 24rpx 40rpx 24rpx 0;
+				border-bottom: 1px solid #F1F3F4;
+				&.checked{
+					.ic{
+						background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_radio2_true.png');
+						background-size: 100% 100%;
+					}
+					.p01{
+						color: #21A378;
+					}
+				}
+			}
+			.ic{
+				right: 0;
+				left: auto;
+				width: 36rpx;
+				height: 24rpx;
+				background: none;
+			}
+			.p01{
+				line-height: 40rpx;
+				color: #616972;
+				font-size: 28rpx;
+			}
+		}
+	}
+	.fixedSubmit-box{
+		transform: translate(0, 120%);
+		transition: all 0.3s ease 0s;
+		&.active{
+			transform: translate(0, 0);
+		}
+	}
+}
+/** 入住指引 **/
+
+/** 选择房型 **/
+.selectHouseType-part{
+	padding: 0 32rpx;
+	.btn-box{
+		text-align: center;
+		padding: 28rpx 32rpx;
+		.btn-a{
+			display: inline-block;
+			line-height: 40rpx;
+			color: #21A378;
+			font-size: 28rpx;
+		}
+	}
+	.houseType-radio{
+		.radio-group{
+			.label{
+				position: relative;
+				z-index: 0;
+				display: block;
+				padding: 28rpx 42rpx 28rpx 0;
+				border-bottom: 1px solid #F1F3F4;
+				&:last-child{
+					border-bottom: 0;
+				}
+				&.checked{
+					.ic{
+						background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_radio2_true.png');
+						background-size: 100% 100%;
+					}
+					.p01{
+						color: #21A378;
+					}
+				}
+			}
+			.ic{
+				position: absolute;
+				z-index: 1;
+				top: 50%;
+				right: 0;
+				margin-top: -16rpx;
+				width: 36rpx;
+				height: 24rpx;
+			}
+			.p01{
+				line-height: 40rpx;
+				color: #1C2023;
+				font-size: 28rpx;
+			}
+		}
+	}
+}
+/** 选择房型 **/
+
+/** 住前指引 **/
+.houseGuide-part{
+	padding: 32rpx;
+	.p01{
+		line-height: 48prx;
+		color: 48px;
+		font-size: 28rpx;
+	}
+}
+/** 住前指引 **/
+
+/** 备案关联 **/
+.recordAssociated-part{
+	padding: 32rpx;
+	&.has-fixedSubmit-box{
+		padding-bottom: 144rpx;
+		&.isIphonex{
+			padding-bottom: 204rpx;
+		}
+	}
+	.fixedSubmit-box{
+		transform: translate(0, 100%);
+		transition: transform 0.3s ease 0s;
+		&.hover{
+			transform: translate(0, 0);
+		}
+	}
+	.recordAssociated-top{
+		position: relative;
+		z-index: 0;
+		margin-bottom: 32rpx;
+		.p01{
+			position: relative;
+			z-index: 1;
+			margin-right: 160rpx;
+			line-height: 40rpx;
+			color: #747D88;
+			font-size: 28rpx;
+		}
+		.btn-a{
+			position: absolute;
+			z-index: 2;
+			top: 0;
+			right: 0;
+			line-height: 40rpx;
+			color: #21A378;
+			font-size: 28rpx;
+		}
+	}
+	.ul-list{
+		.li{
+			position: relative;
+			z-index: 0;
+			margin-bottom: 16rpx;
+			height: 272rpx;
+			padding: 32rpx 48rpx;
+			background: #fff;
+			border-radius: 16rpx;
+			&.selected{
+				background: #21A378;
+				&::after{
+					content: '';
+					position: absolute;
+					z-index: 2;
+					top: 16rpx;
+					right: 16rpx;
+					display: inline-block;
+					width: 120rpx;
+					height: 86rpx;
+					background: url('http://images.junhaoshun.cn/file/common_web/wechat/merchants/icon/icon_select.png') no-repeat;
+					background-size: 100% 100%;
+				}
+				.formdl-list{
+					.dt{
+						color: #FFFFFF;
+					}
+					.font-txt{
+						color: #FFFFFF;
+					}
+				}
+			}
+		}
+		.formdl-list{
+			border-bottom: 0;
+			&.marr{
+				margin-right: 155rpx;
+				.font-txt{
+					@include textoverflow();
+				}
+			}
+			&.default{
+				.font-txt{
+					@include lineClamp(2);
+				}
+			}
+			.dt{
+				line-height: 40rpx;
+				padding: 8rpx 0;
+				color: #747D88;
+			}
+			.dd{
+				margin-left: 144rpx;
+			}
+			.font-txt{
+				line-height: 40rpx;
+				padding: 8rpx 0;
+				color: #1C2023;
+			}
+		}
+	}
+}
+.recordAssociatedAdd-part{
+	padding: 32rpx;
+	&.has-fixedSubmit-box{
+		padding-bottom: 144rpx;
+		&.isIphonex{
+			padding-bottom: 204rpx;
+		}
+	}
+	.form-he{
+		margin-bottom: 16rpx;
+		line-height: 44rpx;
+		color: #99A3AF;
+		font-size: 32rpx;
+	}
+	.form-box{
+		margin-bottom: 16rpx;
+		padding: 0 32rpx;
+		background: #fff;
+		border-radius: 16rpx;
+	}
+	.preForm-box{
+		.li-l{
+			float: left;
+			width: 256rpx;
+		}
+		.li-r{
+			margin-left: 288rpx;
+		}
+	}
+}
+.recordAssociatedDetail-part{
+	padding: 32rpx;
+	&.has-fixedSubmit-box{
+		padding-bottom: 144rpx;
+		&.isIphonex{
+			padding-bottom: 204rpx;
+		}
+	}
+	.fixedSubmit-box{
+		border-top: 0;
+	}
+	.form-part{
+		margin-bottom: 60rpx;
+		.form-he{
+			margin-bottom: 20rpx;
+			line-height: 44rpx;
+			color: #1C2023;
+			font-size: 32rpx;
+		}
+		.form-box{
+			padding: 0 16rpx;
+		}
+	}
+}
+/** 备案关联 **/

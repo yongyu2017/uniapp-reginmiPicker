@@ -1,0 +1,107 @@
+/* 颜色变量 */
+
+/* 行为相关颜色 */
+$uni-color-primary: #007aff;
+$uni-color-success: #4cd964;
+$uni-color-warning: #f0ad4e;
+$uni-color-error: #dd524d;
+
+/* 文字基本颜色 */
+$uni-text-color: #333; //基本色
+$uni-text-color-inverse: #fff; //反色
+$uni-text-color-grey: #999; //辅助灰色，如加载更多的提示信息
+$uni-text-color-placeholder: #808080;
+$uni-text-color-disable: #c0c0c0;
+
+/* 背景颜色 */
+$uni-bg-color: #ffffff;
+$uni-bg-color-grey: #f8f8f8;
+$uni-bg-color-hover: #f1f1f1; //点击状态颜色
+$uni-bg-color-mask: rgba(0, 0, 0, 0.4); //遮罩颜色
+
+/* 边框颜色 */
+$uni-border-color: #c8c7cc;
+
+/* 尺寸变量 */
+
+/* 文字尺寸 */
+$uni-font-size-sm: 24rpx;
+$uni-font-size-base: 28rpx;
+$uni-font-size-lg: 32rpx;
+
+/* 图片尺寸 */
+$uni-img-size-sm: 40rpx;
+$uni-img-size-base: 52rpx;
+$uni-img-size-lg: 80rpx;
+
+/* Border Radius */
+$uni-border-radius-sm: 4rpx;
+$uni-border-radius-base: 6rpx;
+$uni-border-radius-lg: 12rpx;
+$uni-border-radius-circle: 50%;
+
+/* 水平间距 */
+$uni-spacing-row-sm: 10px;
+$uni-spacing-row-base: 20rpx;
+$uni-spacing-row-lg: 30rpx;
+
+/* 垂直间距 */
+$uni-spacing-col-sm: 8rpx;
+$uni-spacing-col-base: 16rpx;
+$uni-spacing-col-lg: 24rpx;
+
+/* 透明度 */
+$uni-opacity-disabled: 0.3; // 组件禁用态的透明度
+
+/* 文章场景相关 */
+$uni-color-title: #2c405a; // 文章标题颜色
+$uni-font-size-title: 40rpx;
+$uni-color-subtitle: #555555; // 二级标题颜色
+$uni-font-size-subtitle: 36rpx;
+$uni-color-paragraph: #3f536e; // 文章段落颜色
+$uni-font-size-paragraph: 30rpx;
+
+/*----------自定义全局样式变量---------*/
+
+//字符样式规范
+$FontSizeExtraSmall: 20rpx;
+$FontSizeSmall: 24rpx;
+$FontSizeBase: 28rpx;
+$FontSizeLarge: 32rpx;
+$FontSizeExtraLarge: 36rpx;
+$FontSizeBigTitle: 48rpx;
+
+//Padding 样式规范
+$PaddingExtraSmall: 10rpx;
+$PaddingSmall: 20rpx;
+$PaddingBase: 22rpx;
+$PaddingLarge: 32rpx;
+$PaddingExtraLarge: 36rpx;
+
+//Margin 样式规范//间隔样式规范
+$MarginExtraSmall: 10rpx;
+$MarginSmall: 16rpx;
+$MarginBase: 22rpx;
+$MarginLarge: 32rpx;
+$MarginExtraLarge: 36rpx;
+
+//定义颜色规范
+$PageBgColor: #fff;
+$SectionBgColor: #fff;
+$HoverColor: #f1f1f1;
+$uni-bg-color-hover: #f1f1f1; //点击状态颜色
+$uni-bg-color-mask: rgba(0, 0, 0, 0.4); //遮罩颜色
+$mainColor: #21A378;
+$mainHoverColor:#21A378;
+$FontColorRed: #FF7070; //状态红色
+$LabelColorRed: #F57E7E; //红色字体label
+$BgColorRed: #FFF2F2; //红色label背景色
+$BgGrayColor: #F6F8FB;
+$BgLabelGreen: #EDF8F4;
+$FontGrayColor: #747D88;
+$TextColorGray: #99A3AF; //浅色文字
+$TextColorMain: #616972; //次级文字 浅黑色
+$TipsMessageBg: #EDECE8; //浅黄色提示文字
+$ButtonDisabled:  #72CCAE; //按钮禁止点击
+$TextMainGray :#90A2B7;
+$TextTitleColor: #1C2023; //入住姓名标题颜色
