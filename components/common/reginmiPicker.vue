@@ -1,64 +1,47 @@
 <template>
 	<view class="reginmiPicker">
-		<view :class="['picker-txt', selectedAreaStr== ''? 'disabled': '']" @click="showModal">{{ selectedAreaStr== ''? placeholdertxt: selectedAreaStr }}</view>
+		<view :class="['picker-txt', select_value== ''? 'disabled': '']" @click="showFun">{{ cityStr }}</view>
 		
-		<view hover-stop-propagation :class="['png', isShowModal? 'active': '']" @click="hideModal"></view>
+		<view hover-stop-propagation :class="['png', isShow? 'active': '']" @click="hideFun"></view>
 		
-		<view :class="['reginmiPicker-box', isShowModal? 'active': '']">
+		<view :class="['reginmiPicker-box', isShow? 'active': '']">
 			
-			<view class="tab-box">
-				<view :class="['li', tabIndex== 0? 'active': '', provincesSelectedIndex[0]!= -1? 'selected': '']" data-index="0" @click="tabChange">{{ provincesSelectedIndex[0]== -1? '省': provincesSelectedVal[0].name }}</view>
-				<view :class="['li', tabIndex== 1? 'active': '', provincesSelectedIndex[1]!= -1? 'selected': '']" data-index="1" @click="tabChange">{{ provincesSelectedIndex[1]== -1? '城市': provincesSelectedVal[1].name }}</view>
-				<view :class="['li', tabIndex== 2? 'active': '', provincesSelectedIndex[2]!= -1? 'selected': '']" data-index="2" @click="tabChange" v-show="isShowArea">{{ provincesSelectedIndex[2]== -1? '区县': provincesSelectedVal[2].name }}</view>
+			<view :class="['tab-box', is_boxShadow? 'boxShadow': '']">
+				<view :class="['li', tabIndex== index? 'active': '', cityList_index[index]!= undefined? 'selected': '']" v-for="(item, index) in tabList" :key="index" @click="tabChange(index)">{{ tabStr(item, index) }}</view>
 			</view>
 			
 			<view class="scroller-box">
-				<!-- 省 -->
-				<view class="co-box" v-show="tabIndex== 0">
-					
-					<view class="list-box" v-for="(item1, index1) in provincesArr" :key="index1">
-						
-						<view class="letter-box">{{ item1.letter }}</view>
-						<view class="city-list fix">
-							<view :class="['li', (provincesVal.pindex== index1 && provincesVal.cindex== index2)? 'active': '']" v-for="(item2, index2) in item1.data" :key="index2" :data-pindex="index1" :data-cindex="index2" :data-item="item2" @click="city_selectedFun">{{ item2.name }}</view>
-						</view>
-						
-					</view>
-					
-				</view>
-				<!-- 省 -->
 				
-				<!-- 市 -->
-				<view class="co-box" v-show="tabIndex== 1">
-					<view class="list-box">
-						
-						<view class="city-list no-letter-box fix">
-							<view :class="['li', provincesSelectedIndex[1]== index? 'active': '']" v-for="(item, index) in cityArr" :key="index" :data-index="index" :data-item="item" @click="provinces_selectedFun">{{ item.name }}</view>
+				<div v-for="(item, index) in cityList" :key="index">
+					
+					<view class="co-box" v-if="index== 0" v-show="tabIndex== 0">
+						<view class="list-box" v-for="(item1, index1) in item" :key="index1">
+							
+							<view class="letter-box">{{ item1.letter }}</view>
+							<view class="city-list fix">
+								<view :class="['li', (provinces_p=== index1 && provinces_c=== index2)? 'active': '']" v-for="(item2, index2) in item1.data" :key="index2" @click="provinces_selected_fun(index1, index2)">{{ item2.name }}</view>
+							</view>
+							
+						</view>
+					</view>
+					
+					<view class="co-box" v-if="index!= 0" v-show="tabIndex== index">
+						<view class="list-box">
+							<view class="city-list no-letter-box fix">
+								<view :class="['li', cityList_index[index]== index1? 'active': '']" v-for="(item1, index1) in item" :key="index1" @click="city_selected_fun(index, index1)">{{ item1.name }}</view>
+							</view>
+							
 						</view>
 						
 					</view>
 					
-				</view>
-				<!-- 市 -->
+				</div>
 				
-				<!-- 区县 -->
-				<view class="co-box" v-show="tabIndex== 2">
-					
-					<view class="list-box">
-						
-						<view class="city-list no-letter-box fix">
-							<view :class="['li', provincesSelectedIndex[2]== index? 'active': '']" v-for="(item, index) in areaArr" :key="index" :data-index="index" :data-item="item" @click="area_selectedFun">{{ item.name }}</view>
-						</view>
-						
-					</view>
-					
-				</view>
-				<!-- 区县 -->
 				
 			</view>
 			
 			<view class="op-box">
-				<view class="btn-a" @click="hideModal">取消</view>
+				<view class="btn-a" @click="hideFun">取消</view>
 			</view>
 			
 		</view>
@@ -71,16 +54,17 @@ import Pinyin from '@/utils/pinyin.js'
 
 export default {
 	props: {
-		cityData: {
+		//选中项绑定值
+		value: {
+			type: [String, Array],
+			default: ''
+		},
+		//省市区数据
+		options: {
 			type: Array,
 			default: []
 		},
-		//省市区选中值的code
-		areaValueArr: {
-			type: Array,
-			default: ['', '', '']
-		},
-		placeholdertxt: {
+		placeholder: {
 			type: String,
 			default: '请选择区域'
 		},
@@ -88,283 +72,264 @@ export default {
 		beforeClose: {
 			type: Function,
 			default: null
+		},
+		list: {
+			type: Array,
+			default: []
 		}
-	},
-	watch: {
-		cityData: function (newValue, oldValue) {
-			console.log('cityData watch')
-			
-			this.provincesArrFun();
-		},
-		areaValueArr: function (newValue, oldValue) {
-			console.log('areaValueArr watch', newValue)
-			
-			this.provincesSelectedIndexFun();
-			this.cityArrFun();
-			this.areaArrFun();
-		},
 	},
 	data() {
 		return {
-			provincesArr: [],  //省数据
-			cityArr: [],  //市数据
-			areaArr: [],  //区数据
-			provincesSelectedIndex: [-1, -1, -1], //省市区选中下标
-			provincesSelectedVal: [],  //省市区选中值
-			provincesVal: {
-				pindex: -1,
-				cindex: -1
-			},  //省数据选中下标
-			selectedAreaStr: '',  //省市区数据，显示字段
+			cityList: [],  //省市区选中对应数据列表
+			cityList_index: [],  //省市区选中下标
+			provinces_list: [],  //省数据
+			provinces_p: null,  //省数据，父节点
+			provinces_c: null,  //省数据，子节点
+			provinces_code: '',  //省数据，code
+			tabList: [],  //tab列表
 			tabIndex: 0,  //tab索引
-			isShowArea: true,  //是否显示区的tab
-			isShowModal: false,  //是否显示弹窗
+			isShow: false,  //是否显示弹窗
+			select_value: '',  //省市区选中值
 		}
+	},
+	watch: {
+		value: function (newVal, oldVal) {
+			console.log('value')
+			this.select_value= newVal;
+			this.init()
+		},
+		options: function (newVal, oldVal) {
+			console.log('options')
+			this.init()
+		},
+	},
+	computed: {
+		is_boxShadow: function () {
+			return this.tabList.length== 1? true: false
+		},
+		tabStr: function (item, Index) {
+			return (item, Index)=> {
+				var str= item;
+				
+				if(this.cityList_index[Index]!= undefined){
+					if(Index== 0){
+						//第一级，省
+						str= this.cityList[Index][this.provinces_p].data[this.provinces_c].name;
+					}else{
+						str= this.cityList[Index][this.cityList_index[Index]].name;
+					}
+				}
+				
+				return str
+			}
+		},
+		cityStr: function () {
+			var str= '';
+			
+			if(this.select_value){
+				var level= 0;  //多维数组，第几层
+					
+				var recursive= (list)=> {
+					if(level< this.select_value.length){
+						list.forEach((value, index, array)=> {
+							if(value.code== this.select_value[level]){
+								str+= value.name+ ' ';
+								level++
+								recursive(value.children)
+							}
+						})
+					}
+				}
+				
+				recursive(this.options)
+			}
+			
+			
+			return str || this.placeholder
+		},
 	},
 	mounted() {
 		console.log('mounted')
 		
-		this.provincesArrFun();
-		this.provincesSelectedIndexFun();
-		this.cityArrFun();
-		this.areaArrFun();
+		this.init()
 	},
 	methods: {
-		//显示弹窗
-		showModal: function () {
-			console.log('showModal')
+		//初始化
+		init: function () {
+			this.select_value= this.value;
+			this.tabList= this.list.slice();
 			
-			this.isShowModal= true;
+			if(this.options.length> 0){
+				if(this.provinces_list.length== 0){
+					this.provinces_list= this.pySegSort(this.options);
+				}
+				this.cityList= [this.provinces_list];
+				this.cityList_index= [];
+				
+				if(this.select_value){
+					this.computed_cityList_index_fun()
+				}
+			}
+			
+			console.log(this.cityList, this.cityList_index)
+		},
+		//展示
+		showFun: function () {
+			console.log('showFun')
+			
+			this.isShow= true;
+			this.init()
 			this.$emit('show')
 		},
-		//取消
-		hideModal: function () {
+		//隐藏
+		hideFun: function () {
+			console.log('hideFun')
+			
 			if(this.beforeClose){
-				this.beforeClose(this.closeModel)
+				this.beforeClose(()=> {
+					this.isShow= false;
+					this.$emit('close')
+				})
 			}else{
-				this.closeModel();
+				this.isShow= false;
+				this.$emit('close')
 			}
 		},
-		//关闭弹窗，0取消1省市区选择完成关闭弹窗
-		closeModel: function (type) {
-			if(type!= 1){
-				//取消时，重置状态
-				this.provincesSelectedIndexFun();
-				this.cityArrFun();
-				this.areaArrFun();
-			}
-			this.isShowModal= false;
-			this.$emit('close')
-		},
-		//tab
-		tabChange: function (e) {
-			var Index= e.currentTarget.dataset.index;
-			
-			//市
-			if(Index== 1 && this.provincesSelectedIndex[0]== -1){
-				uni.showModal({
-					title: '温馨提示',
-					content: '请先选择省份',
-					showCancel: false
-				})
-				return
-			}
-			//区
-			if(Index== 2 && this.provincesSelectedIndex[1]== -1){
-				uni.showModal({
-					title: '温馨提示',
-					content: this.provincesSelectedIndex[0]== -1? '请先选择省份': '请先选择城市',
-					showCancel: false
-				})
-				return
-			}
-			this.tabIndex= Index;
-		},
-		//省选址
-		city_selectedFun: function (e) {
-			var item= e.currentTarget.dataset.item,
-				pindex= e.currentTarget.dataset.pindex,
-				cindex= e.currentTarget.dataset.cindex;
-			
-			this.cityData.forEach((value, index, array)=> {
-				if(value.code== item.code){
-					this.provincesSelectedIndex[0]= index;
-				}
-			})
-			this.provincesSelectedVal[0]= {
-				code: item.code,
-				name: item.name
-			}
-			this.tabIndex= 1;
-			this.isShowArea= true;  //是否显示区的tab
-			this.provincesVal.pindex= pindex;  //省选中坐标
-			this.provincesVal.cindex= cindex;  //省选中坐标
-			this.provincesSelectedIndex[1]= -1;
-			this.provincesSelectedIndex[2]= -1;
-			
-			this.cityArrFun();
-			this.$forceUpdate();
-		},
-		//市选址
-		provinces_selectedFun: function (e) {
-			var Index= e.currentTarget.dataset.index,
-				item= e.currentTarget.dataset.item;
-			
-			this.provincesSelectedIndex[1]= Index;
-			this.provincesSelectedIndex[2]= -1;
-			this.provincesSelectedVal[1]= {
-				code: item.code,
-				name: item.name
-			}
-			
-			//选中的市，是否有区列表
-			if(this.cityData[this.provincesSelectedIndex[0]].children[this.provincesSelectedIndex[1]].children.length!= 0){
-				this.tabIndex= 2;
-				this.isShowArea= true;  //是否显示区的tab
-				
-				this.areaArrFun();
-				this.$forceUpdate();
-			}else{
-				this.isShowArea= false;  //是否显示区的tab
-				this.provincesSelectedVal[2]= {
-					code: '',
-					name: ''
-				}
-				this.selectedAreaStr= this.provincesSelectedVal[0].name+ ' '+ this.provincesSelectedVal[1].name+ ' '+ this.provincesSelectedVal[2].name;
-				
-				this.$emit('change', this.provincesSelectedVal);
-				this.closeModel(1);
-			}
-		},
-		//区选址
-		area_selectedFun: function (e) {
-			var Index= e.currentTarget.dataset.index,
-				item= e.currentTarget.dataset.item;
-			
-			this.provincesSelectedIndex[2]= Index;
-			this.provincesSelectedVal[2]= {
-				code: item.code,
-				name: item.name
-			}
-			this.selectedAreaStr= this.provincesSelectedVal[0].name+ ' '+ this.provincesSelectedVal[1].name+ ' '+ this.provincesSelectedVal[2].name;
-			
-			this.$emit('change', this.provincesSelectedVal);
-			this.closeModel(1);
-			this.$forceUpdate();
-		},
-		//省数据计算
-		provincesArrFun: function () {
-			this.provincesArr= this.pySegSort(this.cityData).slice();			
-		},
-		//市数据计算
-		cityArrFun: function () {
-			var cityArr= [];
-			
-			if(this.provincesSelectedIndex[0]!= -1){
-				this.cityData[this.provincesSelectedIndex[0]].children.forEach((value, index, array)=> {
-					cityArr.push({
-						code: value.code,
-						name: value.name
-					})
-				})
-			}
-			
-			this.cityArr= cityArr.slice();
-		},
-		//区数据计算
-		areaArrFun: function () {
-			var areaArr= [];
-			
-			if(this.provincesSelectedIndex[0]!= -1 && this.provincesSelectedIndex[1]!= -1){
-				this.cityData[this.provincesSelectedIndex[0]].children[this.provincesSelectedIndex[1]].children.forEach((value, index, array)=> {
-					areaArr.push({
-						code: value.code,
-						name: value.name
-					})
-				})
-			}
-			
-			this.areaArr= areaArr.slice();
-		},
-		//provincesSelectedIndex下标值计算
-		provincesSelectedIndexFun: function () {
-			var arr= [-1, -1, -1];  //省市区选中下标
-			
-			if(this.areaValueArr[0]!= ''){
-				this.selectedAreaStr= '';
-				
-				this.cityData.forEach((value1, index1, array1)=> {
-					if(value1.code== this.areaValueArr[0]){
-						arr[0]= index1;
-						this.selectedAreaStr+= value1.name+ ' ';
-						this.provincesSelectedVal[0]= {
-							code: value1.code,
-							name: value1.name
+		//确定
+		confirmFun: function () {
+			var arr= [],  //选中值code
+				level= 0;  //多维数组，第几层
+		
+			var recursive= (list)=> {
+				if(level< this.cityList_index.length){
+					list.forEach((value, index, array)=> {
+						if(index== this.cityList_index[level]){
+							arr.push(value.code)
+							level++
+							recursive(value.children)
 						}
-						//省数据选中下标计算
-						this.provincesArr.forEach((value2, index2, array2)=> {
-							value2.data.forEach((value3, index3, array3)=> {
-								if(value3.code== this.areaValueArr[0]){
-									this.provincesVal.pindex= index2;
-									this.provincesVal.cindex= index3;
+					})
+				}
+			}
+			
+			recursive(this.options)
+			this.$emit('confirm', arr)
+			this.hideFun()
+		},
+		//计算cityList_index值
+		computed_cityList_index_fun: function () {
+			var level= 0;  //多维数组，第几层
+			
+			var recursive= (list)=> {
+				if(level< this.select_value.length){
+					this.tabIndex= level;
+					
+					if(level== 0){
+						this.provinces_list.forEach((value1, index1, array1)=> {
+							value1.data.forEach((value2, index2, array2)=> {
+								if(value2.code== this.select_value[level]){
+									this.provinces_p= index1;
+									this.provinces_c= index2;
 								}
 							})
 						})
-						
-						value1.children.forEach((value2, index2, array2)=> {
-							if(value2.code== this.areaValueArr[1]){
-								arr[1]= index2;
-								this.selectedAreaStr+= value2.name+ ' ';
-								this.provincesSelectedVal[1]= {
-									code: value2.code,
-									name: value2.name
-								}
-								
-								this.provincesSelectedVal[2]= {
-									code: '',
-									name: ''
-								}
-								value2.children.forEach((value3, index3, array3)=> {
-									if(value3.code== this.areaValueArr[2]){
-										arr[2]= index3;
-										this.selectedAreaStr+= value3.name;
-										this.provincesSelectedVal[2]= {
-											code: value3.code,
-											name: value3.name
-										}
-									}
-								})
-							}
-						})
 					}
-				})
-				
-				//区县下无数据时，例如广东-东沙群岛下无区县数据
-				if(arr[2]== -1){
-					this.tabIndex= 1;
-					this.isShowArea= false;  //是否显示区的tab
-				}else{
-					this.tabIndex= 2;
-					this.isShowArea= true;  //是否显示区的tab
+					
+					list.forEach((value, index, array)=> {
+						if(value.code== this.select_value[level]){
+							if(value.children && value.children.length> 0){
+								this.cityList.push(value.children)
+							}
+							this.cityList_index.push(index)
+							level++
+							recursive(value.children)
+						}
+					})
 				}
-			}else{
-				this.tabIndex= 0;
-				this.isShowArea= true;
-				this.provincesVal.pindex= -1;
-				this.provincesVal.cindex= -1;
-				this.provincesSelectedVal= [];
 			}
 			
-			this.provincesSelectedIndex= arr;
+			recursive(this.options)
+		},
+		//tab
+		tabChange: function (Index) {
+			if(Index== 0){
+				this.tabIndex= Index;
+			}else{
+				if(this.cityList_index[Index- 1]== undefined){
+					uni.showModal({
+						title: '温馨提示',
+						content: `请先选择${ this.tabList[Index- 1] }`,
+						showCancel: false
+					})
+				} else if (this.cityList[Index]== undefined){
+					return
+				}else{
+					this.tabIndex= Index;
+				}
+			}
+		},
+		//省选址
+		provinces_selected_fun: function (pindex, cindex) {
+			var code= this.cityList[0][pindex].data[cindex].code;
+			this.provinces_p= pindex;
+			this.provinces_c= cindex;
+			
+			this.options.forEach((value, index, array)=> {
+				if(value.code== code){
+					//是否有下一级children
+					if(value.children && value.children.length> 0){
+						this.cityList.splice(1, this.cityList.length, value.children)
+						this.cityList_index.splice(0, this.cityList_index.length, index)
+						this.tabIndex= 1;
+					}else{
+						this.cityList.splice(1, this.cityList.length)
+						this.cityList_index.splice(0, this.cityList_index.length, index)
+						this.confirmFun()
+					}
+				}
+			})
+		},
+		//市、区、街选址
+		city_selected_fun: function (tabIndex, Index) {
+			var level= 0;  //多维数组，第几层
+				
+			this.cityList_index.splice(tabIndex, this.cityList_index.length, Index)
+			
+			//数组遍历、递归
+			var recursive= (list)=> {
+				if(level== tabIndex){
+					list.forEach((value, index, array)=> {
+						if(index== Index){
+							if(value.children && value.children.length> 0){
+								this.cityList.splice(level+ 1, this.cityList.length, value.children)
+								this.tabIndex= level+ 1;
+							}else{
+								//没有下一级children
+								this.cityList.splice(level+ 1, this.cityList.length)
+								this.confirmFun()
+							}
+						}
+					})
+				}else{
+					list.forEach((value, index, array)=> {
+						if(index== this.cityList_index[level]){
+							level++
+							recursive(value.children)
+						}
+					})
+				}
+			}
+			
+			recursive(this.options)
 		},
 		//拼音按首字母排序
-		pySegSort: function (arr) {
+		pySegSort: function (list) {
 			var letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
 			var segs = [];
 			
 			letters.forEach((value1, index1, array1)=> {
 				var curr = {letter: value1, data:[]};
-				arr.forEach((value2, index2, array2)=> {
+				list.forEach((value2, index2, array2)=> {
 					var str= Pinyin.getSpell(value2.name, (charactor, spell)=> {
 					    return spell[1];
 					})
@@ -384,7 +349,7 @@ export default {
 			var arr= [],
 				splitIndex= 7;
 			for(var i= 0; i< Math.ceil(letters.length/ splitIndex); i++){
-				var keyOb = {letter: '', letterArr: [], data:[]},
+				var keyOb = { letter: '', letterArr: [], data: [] },
 					start= i* splitIndex,
 					end= (i+ 1)* splitIndex;
 					
@@ -456,6 +421,12 @@ export default {
 			display: flex;
 			width: 100%;
 			height: 100rpx;
+			&.boxShadow{
+				box-shadow: 0 3rpx 3rpx #e9e9e9;
+				.li{
+					max-width: 200rpx;
+				}
+			}
 			.li{
 				position: relative;
 				z-index: 0;

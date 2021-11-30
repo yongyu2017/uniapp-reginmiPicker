@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<reginmiPicker :areaValueArr="selectCity" :cityData="cityData" @change="cityChange" :beforeClose="beforeCloseFun"></reginmiPicker>
+		<reginmiPicker :options="cityData" v-model="selectCity" :list="['省', '城市', '区县', '街道']" @confirm="cityChange"></reginmiPicker>
 	</view>
 </template>
 
@@ -16,12 +16,20 @@
 			return {
 				title: 'Hello',
 				cityData: [],  //省市区数据
-				selectCity: ['', '', ''],  //省市区选中值
+				selectCity: '',  //省市区选中值
 			}
 		},
 		onLoad() {
 			console.log('onLoad')
 			this.cityData= city;
+			this.selectCity= ['110000', '110100', '110101', '110888'];
+			
+			console.log(this.cityData)
+		},
+		watch: {
+			selectCity: function (newVal, oldVal) {
+				console.log(newVal)
+			},
 		},
 		onReady() {
 			console.log('onReady')
@@ -29,9 +37,7 @@
 		methods: {
 			//省市区，change
 			cityChange: function (e) {
-				this.selectCity= e.map((value, index, array)=> {
-					return value.code
-				})				
+				this.selectCity= e;	
 			},
 			beforeCloseFun: function (closeModel) {
 				uni.showModal({

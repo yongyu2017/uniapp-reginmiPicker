@@ -1,10 +1,12 @@
 export var city= [{
+    'code': '000000',
+    'name': '测试'},{
     'code': '110000',
     'name': '北京',
     'children': [{
         'code': '110100',
         'name': '北京市',
-        'children': [{ 'code': '110101', 'name': '东城区' }, {
+        'children': [{ 'code': '110101', 'name': '东城区', 'children': [{'code': '110888', 'name': '南头古城'}] }, {
             'code': '110102',
             'name': '西城区'
         }, { 'code': '110105', 'name': '朝阳区' }, {
