@@ -1,5 +1,5 @@
 # uniapp-reginmiPicker
-uniapp代码片段分享，省市区选择器组件！
+uniapp代码片段分享，省市区选择器组件，支持最多4级级联！
 
 ###### 效果图
 
